@@ -17,7 +17,7 @@ public class Ingresso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String tipo;
+    private String tipoIngresso;
     private Double preco;
     private Integer quantidadeDisponivel;
 
@@ -32,8 +32,8 @@ public class Ingresso {
     public Ingresso() {
     }
 
-    public Ingresso(String tipo, Double preco, Integer quantidadeDisponivel, Evento evento) {
-        this.tipo = tipo;
+    public Ingresso(String tipoIngresso, Double preco, Integer quantidadeDisponivel, Evento evento) {
+        this.tipoIngresso = tipoIngresso;
         this.preco = preco;
         this.quantidadeDisponivel = quantidadeDisponivel;
         this.evento = evento;
@@ -48,12 +48,12 @@ public class Ingresso {
         this.id = id;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getTipoIngresso() {
+        return tipoIngresso;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setTipoIngresso(String tipoIngresso) {
+        this.tipoIngresso = tipoIngresso;
     }
 
     public Double getPreco() {
@@ -94,7 +94,7 @@ public class Ingresso {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
+        result = prime * result + ((tipoIngresso == null) ? 0 : tipoIngresso.hashCode());
         result = prime * result + ((preco == null) ? 0 : preco.hashCode());
         result = prime * result + ((quantidadeDisponivel == null) ? 0 : quantidadeDisponivel.hashCode());
         result = prime * result + ((evento == null) ? 0 : evento.hashCode());
@@ -109,7 +109,7 @@ public class Ingresso {
             return false;
         Ingresso other = (Ingresso) obj;
         return Objects.equals(id, other.id) &&
-                Objects.equals(tipo, other.tipo) &&
+                Objects.equals(tipoIngresso, other.tipoIngresso) &&
                 Objects.equals(preco, other.preco) &&
                 Objects.equals(quantidadeDisponivel, other.quantidadeDisponivel) &&
                 Objects.equals(evento, other.evento);
