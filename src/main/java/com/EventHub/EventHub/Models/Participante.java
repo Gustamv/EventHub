@@ -15,10 +15,13 @@ public class Participante {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String nome;
-    @Column(unique = true)
+
+    @Column(unique = true, length = 100)
     private String email;
+
+    @Column(length = 255)
     private String senha;
 
     @OneToMany(mappedBy = "participante")

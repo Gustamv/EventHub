@@ -1,71 +1,52 @@
 package com.EventHub.EventHub.Services;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.EventHub.EventHub.Models.Evento;
 import com.EventHub.EventHub.Models.Ingresso;
 import com.EventHub.EventHub.Repositories.IngressoRepository;
+import org.springframework.stereotype.Service;
 
-import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class IngressoService {
+    private final IngressoRepository ingressoRepository;
 
-    @Autowired
-    private IngressoRepository ingressoRepository;
-
-    // Encontrar ingressos por evento
-    public List<Ingresso> buscarIngressosPorEvento(Evento evento) {
-        return ingressoRepository.findByEvento(evento);
+    public IngressoService(IngressoRepository ingressoRepository) {
+        this.ingressoRepository = ingressoRepository;
     }
 
-    // Encontrar ingressos por tipo
-    public List<Ingresso> buscarIngressosPorTipo(String tipoIngresso) {
-        return ingressoRepository.findByTipoIngresso(tipoIngresso);
+    public List<Ingresso> findAll() {
+        return ingressoRepository.findAll();
     }
 
-    // Encontrar ingressos com quantidade disponível maior que um determinado valor
-    public List<Ingresso> buscarIngressosDisponiveis(Integer quantidadeMinima) {
-        return ingressoRepository.findByQuantidadeDisponivelGreaterThan(quantidadeMinima);
+    public Optional<Ingresso> findById(Long id) {
+        return ingressoRepository.findById(id);
     }
 
-    // Criar um novo ingresso
-    public Ingresso criarIngresso(Ingresso ingresso) {
+    public Ingresso save(Ingresso ingresso) {
         return ingressoRepository.save(ingresso);
     }
 
-    // Atualizar um ingresso
-    public Ingresso atualizarIngresso(Long id, Ingresso ingresso) {
-        Ingresso ingressoExistente = ingressoRepository.findById(id).orElse(null);
-        if (ingressoExistente == null) {
-            throw new EntityNotFoundException("Ingresso não encontrado");
-        }
-
-        // Atualizar os campos do ingresso
-        ingressoExistente.setTipoIngresso(ingresso.getTipoIngresso());
-        ingressoExistente.setQuantidadeDisponivel(ingresso.getQuantidadeDisponivel());
-        // ... outros campos a serem atualizados
-
-        return ingressoRepository.save(ingressoExistente);
+    public void delete(Ingresso ingresso) {
+        ingressoRepository.delete(ingresso);
     }
 
-    // Vender um ingresso
-    public void venderIngresso(Long id) {
-        Ingresso ingresso = ingressoRepository.findById(id).orElse(null);
-        if (ingresso == null) {
-            throw new EntityNotFoundException("Ingresso não encontrado");
-        }
+    public Ingresso createIngresso(String tipoIngresso, Double preco, Integer quantidadeDisponivel,
+            LocalDate dataValidade, Evento evento) {
+        Ingresso ingresso = new Ingresso(tipoIngresso, preco, quantidadeDisponivel, dataValidade, evento);
+        return save(ingresso);
+    }
 
-        // Verificar se há ingressos disponíveis
-        if (ingresso.getQuantidadeDisponivel() <= 0) {
-            throw new RuntimeException("Ingresso indisponível");
-        }
-
-        // Atualizar a quantidade disponível
-        ingresso.setQuantidadeDisponivel(ingresso.getQuantidadeDisponivel() - 1);
-        ingressoRepository.save(ingresso);
+    public Ingresso updateIngresso(Long id, String tipoIngresso, Double preco, Integer quantidadeDisponivel,
+            LocalDate dataValidade, Evento evento) {
+        Ingresso ingresso = findById(id).orElseThrow();
+        ingresso.setTipoIngresso(tipoIngresso);
+        ingresso.setPreco(preco);
+        ingresso.setQuantidadeDisponivel(quantidadeDisponivel);
+        ingresso.setDataValidade(dataValidade);
+        ingresso.setEvento(evento);
+        return save(ingresso);
     }
 }

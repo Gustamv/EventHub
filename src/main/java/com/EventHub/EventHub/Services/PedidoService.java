@@ -53,4 +53,14 @@ public class PedidoService {
         pedido.setStatus("CANCELADO");
         pedidoRepository.save(pedido);
     }
+
+    public List<Pedido> buscarPedidos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'buscarPedidos'");
+    }
+
+    public Pedido buscarPedidoPorId(Long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'buscarPedidoPorId'");
+    }
 }

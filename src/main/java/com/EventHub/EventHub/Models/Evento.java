@@ -18,14 +18,28 @@ public class Evento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String nome;
+
+    @Column(columnDefinition = "TEXT")
     private String descricao;
+
+    @Column(nullable = false)
     private LocalDateTime dataHoraInicio;
+
+    @Column(nullable = false)
     private LocalDateTime dataHoraTermino;
+
+    @Column(nullable = false, length = 255)
     private String local;
+
+    @Column(nullable = false)
     private Integer capacidadeMaxima;
+
+    @Column(length = 255)
     private String imagem;
+
+    @Column(nullable = false, length = 50)
     private String categoria;
 
     @ManyToOne

@@ -1,8 +1,10 @@
 package com.EventHub.EventHub.Models;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,9 +19,17 @@ public class Ingresso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 50)
     private String tipoIngresso;
+
+    @Column(nullable = false, precision = 10, scale = 2)
     private Double preco;
+
+    @Column(nullable = false)
     private Integer quantidadeDisponivel;
+
+    @Column(nullable = false)
+    private LocalDate dataValidade;
 
     @ManyToOne
     @JoinColumn(name = "evento_id")
@@ -28,14 +38,17 @@ public class Ingresso {
     @OneToMany(mappedBy = "ingresso")
     private List<Pedido> pedidos;
 
-    // Construtor
+    // Construtor padrão
     public Ingresso() {
     }
 
-    public Ingresso(String tipoIngresso, Double preco, Integer quantidadeDisponivel, Evento evento) {
+    // Construtor com parâmetros
+    public Ingresso(String tipoIngresso, Double preco, Integer quantidadeDisponivel, LocalDate dataValidade,
+            Evento evento) {
         this.tipoIngresso = tipoIngresso;
         this.preco = preco;
         this.quantidadeDisponivel = quantidadeDisponivel;
+        this.dataValidade = dataValidade;
         this.evento = evento;
     }
 
@@ -72,6 +85,14 @@ public class Ingresso {
         this.quantidadeDisponivel = quantidadeDisponivel;
     }
 
+    public LocalDate getDataValidade() {
+        return dataValidade;
+    }
+
+    public void setDataValidade(LocalDate dataValidade) {
+        this.dataValidade = dataValidade;
+    }
+
     public Evento getEvento() {
         return evento;
     }
@@ -91,27 +112,23 @@ public class Ingresso {
     // hashCode e equals
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((tipoIngresso == null) ? 0 : tipoIngresso.hashCode());
-        result = prime * result + ((preco == null) ? 0 : preco.hashCode());
-        result = prime * result + ((quantidadeDisponivel == null) ? 0 : quantidadeDisponivel.hashCode());
-        result = prime * result + ((evento == null) ? 0 : evento.hashCode());
-        return result;
+        return Objects.hash(id, tipoIngresso, preco, quantidadeDisponivel, dataValidade, evento);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null || getClass() != obj.getClass())
+        }
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
+        }
         Ingresso other = (Ingresso) obj;
         return Objects.equals(id, other.id) &&
                 Objects.equals(tipoIngresso, other.tipoIngresso) &&
                 Objects.equals(preco, other.preco) &&
                 Objects.equals(quantidadeDisponivel, other.quantidadeDisponivel) &&
+                Objects.equals(dataValidade, other.dataValidade) &&
                 Objects.equals(evento, other.evento);
     }
 }

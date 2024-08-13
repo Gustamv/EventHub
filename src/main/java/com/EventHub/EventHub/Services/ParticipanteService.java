@@ -15,6 +15,20 @@ public class ParticipanteService {
     private ParticipanteRepository participanteRepository;
 
     /**
+     * Cria um novo participante
+     * 
+     * @param participante o participante a ser criado
+     * @return o participante criado
+     * @throws Exception
+     */
+    public Participante criarParticipante(Participante participante) throws Exception {
+        if (buscarParticipantePorEmail(participante.getEmail()).isPresent()) {
+            throw new Exception("Participante com e-mail já existe");
+        }
+        return salvarParticipante(participante);
+    }
+
+    /**
      * Salva um novo participante ou atualiza um existente
      * 
      * @param participante o participante a ser salvo

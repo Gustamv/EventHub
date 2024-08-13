@@ -21,6 +21,10 @@ public class EventoService {
     @Autowired
     private OrganizadorRepository organizadorRepository;
 
+    public List<Evento> buscarTodosOsEventos() {
+        return eventoRepository.findAll();
+    }
+
     public List<Evento> buscarEventosPorNome(String nome) {
         return eventoRepository.findByNomeContainingIgnoreCase(nome);
     }
@@ -72,9 +76,19 @@ public class EventoService {
     }
 
     private boolean verificarConflitoDeHorarios(Evento evento) {
-        // Implementar lógica para verificar se o novo evento conflita com outros
-        // eventos do mesmo organizador
-        // ...
-        return false; // Retorna true se houver conflito
+        // Obtenha a lista de eventos do mesmo organizador (substitua pela sua lógica)
+        List<Evento> eventosExistentes = eventoRepository.findByOrganizador(evento.getOrganizador());
+
+        // Itere sobre os eventos existentes
+        for (Evento eventoExistente : eventosExistentes) {
+            // Verifique se os intervalos de tempo se sobrepõem
+            if (evento.getDataHoraInicio().isBefore(eventoExistente.getDataHoraTermino()) &&
+                    evento.getDataHoraTermino().isAfter(eventoExistente.getDataHoraInicio())) {
+                return true; // Há conflito de horários
+            }
+        }
+
+        return false; // Não há conflito
     }
+
 }
